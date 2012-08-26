@@ -58,12 +58,15 @@ def admin():
 
 @app.route('/addpost', methods=['GET', 'POST'])
 def addpost():
-	if request.method == 'POST':
-		articlename = request.form['articlename']
-		articlecontent = request.form['articlecontent']
-		postid = controller.storePost(articlename, articlecontent)
-		return redirect('/postdetail/%s' % postid)
-	return render_template('addpost.html', post_handle_url=url_for('addpost'))
+	if helper.getCurrentUser():
+		if request.method == 'POST':
+			articlename = request.form['articlename']
+			articlecontent = request.form['articlecontent']
+			postid = controller.storePost(articlename, articlecontent)
+			return redirect('/postdetail/%s' % postid)
+		return render_template('addpost.html', post_handle_url=url_for('addpost'))
+	else:
+		return redirect(url_for('login'))
 
 @app.route('/editpost', methods=['GET', 'POST'])
 def editpost():

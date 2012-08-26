@@ -16,7 +16,8 @@ def login_handler(user, password):
     return True
 
 def logout_handler():
-    session.pop('username')
+    if 'username' in session:
+        session.pop('username')
     
 def getCurrentUser():
     if 'username' not in session:

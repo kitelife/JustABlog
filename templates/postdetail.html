@@ -7,9 +7,11 @@
 			<div class="postcontent well">
 				{{ postinfo.postcontent|safe }}
 			</div>
-			<div class="editthispost">
-				<button class="btn" ><a href="/editpost?articleid={{ postinfo.postid }}">编辑</a></button>&nbsp;&nbsp;
+			{% if 'username' in session %}
+				<div class="editthispost">
+				<button class="btn" ><a href="/editpost?articleid={{ postinfo.postid }}">编辑</a></button>
 				<button class="btn" ><a href="/deletepost?articleid={{ postinfo.postid }}">删除</a></button>
-			</div>
+				</div>
+			{% endif %}
 	</div>
 {% endblock %}
