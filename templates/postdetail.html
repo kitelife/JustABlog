@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block mainContent %}
+	<div class="container">
+		<ul>
+			<div class="posttitle">
+				<p>{{ postinfo.posttitle }} --- {{ postinfo.updatetime }}</p>
+			</div>
+			<div class="postcontent well">
+				{{ postinfo.postcontent }}
+			</div>
+		</ul>
+	</div>
+{% endblock %}

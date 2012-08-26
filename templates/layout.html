@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Language" content="zh-CN">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.css') }}" type="text/css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+{% if title %}
+	<title>{{ title }}</title>
+{% else %}
+	<title>Just A Blog --- youngsterxyf</title>
+{% endif %}
+</head>
+<body>
+	<div class="navbar navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="/">Just A Blog</a>
+			<ul class="nav">
+				<li class="active"><a href="/"><i class="icon-home"></i>主页</a></li>
+				<li><a href="/projects"><i class="icon-leaf"></i>项目</a></li>
+				<li><a href="/about"><i class="icon-heart"></i>关于</a></li>
+			</ul>
+		</div>
+	</div>
+{% block mainContent%}
+{% endblock %}
+	<footer class="footer" id="footer">
+		<div class="container well" >
+			<p>Copyleft &copy youngsterxyf</p>
+			<p>E-mail:youngsterxiayf@gmail.com</p>
+		</div>
+	</footer>
+</body>
+</html>
