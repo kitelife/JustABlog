@@ -15,16 +15,22 @@ class StoreOperation(object):
         self.conn = sqlite3.connect(dbName)
         self.cursor = self.conn.cursor()
         
-    def sqlCanModifyTable(self, sql):
-        self.cursor.execute(sql)
+    def sqlCanModifyTable(self, sql, data):
+        self.cursor.execute(sql, data)
         self.conn.commit()
         
-    def sqlSelectFetchOne(self, sql):
-        self.cursor.execute(sql)
+    def sqlSelectFetchOne(self, sql, data):
+        if not data:
+            self.cursor.execute(sql)
+        else:
+            self.cursor.execute(sql, data)
         return self.cursor.fetchone()
     
-    def sqlSelectFetchAll(self, sql):
-        self.cursor.execute(sql)
+    def sqlSelectFetchAll(self, sql, data):
+        if not data:
+            self.cursor.execute(sql)
+        else:
+            self.cursor.execute(sql, data)
         return self.cursor.fetchall()
     
     def closeDB(self):

@@ -13,7 +13,7 @@ import helper
 
 def getPosts():
     db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchAll("SELECT postid, posttitle, updatetime FROM posts ORDER BY updatetime DESC")
+    result = db.sqlSelectFetchAll("SELECT postid, posttitle, updatetime FROM posts ORDER BY updatetime DESC", data=None)
     db.closeDB()
     listResults = list()
    
@@ -36,7 +36,7 @@ def getPostDetails(post_id):
 
 def getMDPost(post_id):
     db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchOne("SELECT posttitle, postcontent, updatetime FROM posts WHERE postid = '%s'" % post_id)
+    result = db.sqlSelectFetchOne("SELECT posttitle, postcontent, updatetime FROM posts WHERE postid = ?" , (post_id,))
     dictResult = dict()
     dictResult['postid'] = post_id
     dictResult['posttitle'] = result[0]
@@ -47,7 +47,7 @@ def getMDPost(post_id):
 
 def loginCheckUser(username, password):
     db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE username = '%s' AND password = '%s'" % (username, password))
+    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE username = ? AND password = ?" , (username, password))
     if result and result[0]:
         return True
     else:
@@ -57,7 +57,7 @@ def storePost(postName, postContent):
     createtime = time.strftime("%Y-%m-%d %H:%M:%S")
     db = model.StoreOperation('justablog.db')
     postId = 'p' + str(time.time()).replace('.', '') + str("%.5f" % random.uniform(100, 1000)).replace('.', '')
-    db.sqlCanModifyTable("INSERT INTO posts (postid, posttitle, postcontent, updatetime) VALUES('%s', '%s', '%s', '%s')" % (postId, postName, postContent, createtime))
+    db.sqlCanModifyTable("INSERT INTO posts (postid, posttitle, postcontent, updatetime) VALUES(?, ?, ?, ?)", (postId, postName, postContent, createtime))
     db.conn.commit()
     db.closeDB()
     
@@ -66,14 +66,13 @@ def storePost(postName, postContent):
 def updatePost(postid, posttitle, postcontent):
     updatetime = time.strftime("%Y-%m-%d %H:%M:%S")
     db = model.StoreOperation('justablog.db')
-    db.sqlCanModifyTable("UPDATE posts SET posttitle = '%s', postcontent = '%s', updatetime = '%s' WHERE postid = '%s'"
-                          % (posttitle, postcontent, updatetime, postid))
+    db.sqlCanModifyTable("UPDATE posts SET posttitle = ?, postcontent = ?, updatetime = ? WHERE postid = ?", (posttitle, postcontent, updatetime, postid))
     db.conn.commit()
     db.closeDB()
 
 def delPost(postid):
     db = model.StoreOperation('justablog.db')
-    db.sqlCanModifyTable("DELETE FROM posts WHERE postid = '%s'" % postid)
+    db.sqlCanModifyTable("DELETE FROM posts WHERE postid = ?", (postid,))
     db.conn.commit()
     db.closeDB()
     

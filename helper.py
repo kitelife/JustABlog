@@ -26,5 +26,5 @@ def getCurrentUser():
     
 def handleMarkDownContent(content):
     import markdown
-    html = markdown.markdown(content, safe_mode=True, output_format='html4')
+    html = markdown.markdown(content, ['fenced_code', 'codehilite(force_linenos=True)'], safe_mode=True)
     return html
