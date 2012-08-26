@@ -1,13 +1,15 @@
 {% extends "layout.html" %}
 {% block mainContent %}
 	<div class="container">
-		<ul>
 			<div class="posttitle">
-				<p>{{ postinfo.posttitle }} --- {{ postinfo.updatetime }}</p>
+				<h3>{{ postinfo.posttitle }}</h3>
 			</div>
 			<div class="postcontent well">
-				{{ postinfo.postcontent }}
+				{{ postinfo.postcontent|safe }}
 			</div>
-		</ul>
+			<div class="editthispost">
+				<button class="btn" ><a href="/editpost?articleid={{ postinfo.postid }}">编辑</a></button>&nbsp;&nbsp;
+				<button class="btn" ><a href="/deletepost?articleid={{ postinfo.postid }}">删除</a></button>
+			</div>
 	</div>
 {% endblock %}

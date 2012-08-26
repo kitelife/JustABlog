@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Language" content="zh-CN">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.css') }}" type="text/css">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 {% if title %}
 	<title>{{ title }}</title>
 {% else %}
@@ -25,9 +26,9 @@
 {% block mainContent%}
 {% endblock %}
 	<footer class="footer" id="footer">
-		<div class="container well" >
+		<div class="well" >
 			<p>Copyleft &copy youngsterxyf</p>
-			<p>E-mail:youngsterxiayf@gmail.com</p>
+			<p>E-mail: youngsterxiayf@gmail.com</p>
 		</div>
 	</footer>
 </body>
