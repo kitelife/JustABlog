@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block mainContent %}
+	<div class="container">
+		<form action="{{ post_handle_url }}" method="POST">
+			<legend>添加文章</legend>
+			{% if articleid %}
+				<input type="hidden" name="articleid" value="{{ articleid }}"/>
+			{% endif %}
+			<label>标题</label>
+			{% if articlename %}
+        		<input type="text" class="input-xlarge" name="articlename" value="{{ articlename }}"/>
+        	{% else %}
+        		<input type="text" class="input-xlarge" name="articlename" />
+        	{% endif %}
+        	<label>正文</label>
+        	{% if articlecontent %}
+        		<textarea class="input-xxlarge" rows="18" cols="50" name="articlecontent">{{ articlecontent }}</textarea>
+        	{% else %}
+				<textarea class="input-xxlarge" rows="18" cols="50" name="articlecontent"></textarea>
+			{% endif %}
+			<label></label>
+			<button class="btn btn-primary" type="submit">提交</button>
+    	</form>
+	</div>
+{% endblock %}
