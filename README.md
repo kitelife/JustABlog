@@ -10,7 +10,7 @@ Dependencies
 * Database Engine --- Python-SQLite3
 * Python-MarkDown
 
-SETUP
+Setup
 -------
 
 In command-line, do:
