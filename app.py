@@ -16,11 +16,16 @@ app = Flask(
 )
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 app.config.from_pyfile(os.path.join(CONF, 'base.py'))
+app.config['active_page'] = dict()
+#print app.config
 
 @app.route('/')
 def index():
+	app.config['active_page'].clear()
+	app.config['active_page']['HOME'] = 'active'
 	postinfos = controller.getPosts()
 	return render_template('main.html', postinfolist=postinfos)
+
 @app.route('/postdetail/<post_id>')
 def post(post_id):
 	postDetail = controller.getPostDetails(post_id)
@@ -28,10 +33,14 @@ def post(post_id):
 
 @app.route('/projects')
 def projects():
+	app.config['active_page'].clear()
+	app.config['active_page']['PROJECTS'] = 'active'
 	return render_template("projects.html")
 
 @app.route('/about')
 def aboutblog():
+	app.config['active_page'].clear()
+	app.config['active_page']['ABOUT'] = 'active'
 	return render_template('aboutblog.html')
 
 @app.route('/login', methods=['GET', 'POST'])

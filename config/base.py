@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 '''
 Created on Aug 26, 2012
 
@@ -7,3 +8,5 @@ Created on Aug 26, 2012
 SESSION_COOKIE_NAME = 'justablog'
 #SESSION_COOKIE_SECURE = True
 PERMANENT_SESSION_LIFETIME = 3600 * 24 * 30
+
+#BLOGNAME = u'黑客的白板'
