@@ -76,5 +76,28 @@ def delPost(postid):
     db.conn.commit()
     db.closeDB()
     
+def getUserByEmail(email):
+    db = model.StoreOperation('justablog.db')
+    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE email = ?", (email,))
+    if result and result[0]:
+        return True
+    else:
+        return False
+    
+def getUserByUsername(username):
+    db = model.StoreOperation('justablog.db')
+    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE username = ?", (username,))
+    if result and result[0]:
+        return True
+    else:
+        return False
+
+def addAccount(username, password, email):
+    db = model.StoreOperation('justablog.db')
+    db.sqlCanModifyTable("INSERT INTO users (username, password, email) VALUES(?, ?, ?)", (username, password, email))
+    db.conn.commit()
+    db.closeDB()
+    return True
+ 
 if __name__ == '__main__':
     getPosts()

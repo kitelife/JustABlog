@@ -59,6 +59,28 @@ def logout():
 	helper.logout_handler()
 	return redirect(url_for('index'))
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+	if request.method == 'POST':
+		username = request.form['username']
+		password = request.form['password']
+		repassword = request.form['repassword']
+		email = request.form['email']
+		
+		if password == repassword:
+			emailExists = controller.getUserByEmail(email)
+			usernameExists = controller.getUserByUsername(username)
+			if emailExists:
+				return render_template('registerform.html', tip=u"邮箱已被注册")
+			elif usernameExists:
+				return render_template('registerform.html', tip=u"用户名已被注册")
+			else:
+				controller.addAccount(username, password, email)
+				return redirect(url_for('login'))
+		else:
+			return render_template('registerform.html', tip=u"两次密码输入不一致")
+	return render_template('registerform.html')
+
 @app.route('/admin')
 def admin():
 	if not helper.getCurrentUser():

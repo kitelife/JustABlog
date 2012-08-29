@@ -31,7 +31,7 @@
 			</ul>
 			<ul class="nav pull-right">
 				{% if 'username' in session %}
-					<li><a href="#"><i class="icon-user"></i>{{ session['username'] }}</a></li>
+					<li><a href="/admin"><i class="icon-user"></i>{{ session['username'] }}</a></li>
 					<li><a href="/logout"><i class="icon-hand-left"></i> 登出</a></li>
 				{% else %}
 					<li><a href="/login"><i class="icon-hand-right"></i> 登录</a></li>
