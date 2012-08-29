@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block mainContent %}
 	<div class="container">
+		{% for repo in repos %}
+			<div class="repoinfo well">
+				{{ repo }}
+			</div>
+		{% endfor %}
 	</div>
 {% endblock %}

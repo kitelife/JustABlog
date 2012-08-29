@@ -42,9 +42,19 @@ def countUser():
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM users")
     print cursor.fetchone()
-    
+
+def commentTable():
+    conn = sqlite3.connect('justablog.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE comments
+                    (commentid INTEGER PRIMARY KEY ASC, postid TEXT, commentusername TEXT, commentcontent TEXT, commenttime TEXT)''')
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 if __name__ == '__main__':
-    postTable()
-    userTable()
-    countUser()
+    #postTable()
+    #userTable()
+    #countUser()
+    commentTable()
     

@@ -98,6 +98,27 @@ def addAccount(username, password, email):
     db.conn.commit()
     db.closeDB()
     return True
+
+def addComment(postid, commentUsername, commentContent):
+    commenttime = time.strftime("%Y-%m-%d %H:%M:%S")
+    db = model.StoreOperation('justablog.db')
+    db.sqlCanModifyTable("INSERT INTO comments (postid, commentusername, commentcontent, commenttime) VALUES (?, ?, ?, ?)",
+                          (postid, commentUsername, commentContent, commenttime))
+    db.conn.commit()
+    db.closeDB()
+    return True
+
+def getComments(postid):
+    db = model.StoreOperation('justablog.db')
+    comments = db.sqlSelectFetchAll("SELECT commentusername, commentcontent, commenttime FROM comments WHERE postid = ?", (postid,))
+    commentList = list()
+    for comment in comments:
+        commentItem = dict()
+        commentItem['commentusername'] = comment[0]
+        commentItem['commentcontent'] = comment[1]
+        commentItem['commenttime'] = comment[2]
+        commentList.append(commentItem)
+    return commentList
  
 if __name__ == '__main__':
     getPosts()

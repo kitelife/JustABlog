@@ -29,13 +29,21 @@ def index():
 @app.route('/postdetail/<post_id>')
 def post(post_id):
 	postDetail = controller.getPostDetails(post_id)
-	return render_template("postdetail.html", postinfo=postDetail)
+	postComments = controller.getComments(post_id)
+	return render_template("postdetail.html", postinfo=postDetail, commentlist=postComments)
 
 @app.route('/projects')
 def projects():
 	app.config['active_page'].clear()
 	app.config['active_page']['PROJECTS'] = 'active'
-	return render_template("projects.html")
+	from github import Github
+	g = Github(app.config['GITHUBUSERNAME'], app.config['GITHUBPASSWORD'])
+	
+	repoList = list()
+	for repo in g.get_user().get_repos():
+		repoList.append(repo.name)
+	repoList.sort()
+	return render_template("projects.html", repos=repoList)
 
 @app.route('/about')
 def aboutblog():
@@ -117,6 +125,14 @@ def deletepost():
 	postid = request.args.get('articleid', '')
 	controller.delPost(postid)
 	return redirect(url_for('index'))
+
+@app.route('/addcomment', methods=['POST'])
+def addcomment():
+	postid = request.form['postid']
+	commentusername = request.form['username']
+	commentcontent = request.form['commentcontent']
+	controller.addComment(postid, commentusername, commentcontent)
+	return redirect('/postdetail/' + postid)
 
 ###########################################
 if __name__ == '__main__':
