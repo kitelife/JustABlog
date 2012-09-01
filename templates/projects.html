@@ -3,7 +3,14 @@
 	<div class="container">
 		{% for repo in repos %}
 			<div class="repoinfo well">
-				{{ repo }}
+				<p><strong>{{ repo.reponame }}</strong>&nbsp;
+					{% if repo.repolanguage %}
+						<span class="label label-info">{{ repo.repolanguage }}</span>
+					{% endif %}
+				</p>
+				{% if repo.repohomepage %}
+					<p>{{ repo.repohomepage }}</p>
+				{% endif %}
 			</div>
 		{% endfor %}
 	</div>

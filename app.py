@@ -41,7 +41,11 @@ def projects():
 	
 	repoList = list()
 	for repo in g.get_user().get_repos():
-		repoList.append(repo.name)
+		repodict = dict()
+		repodict['reponame'] = repo.name
+		repodict['repohomepage'] = repo.homepage
+		repodict['repolanguage'] = repo.language
+		repoList.append(repodict)
 	repoList.sort()
 	return render_template("projects.html", repos=repoList)
 
