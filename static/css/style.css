@@ -1,5 +1,10 @@
+.brand, .container {
+	font-family: 'Kotta One', "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif, serif;
+	font-size: 15px;
+}
 .container {
-	font: 15px/1.62 "Rosario", "Xin Gothic", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
+	letter-spacing: 2.5px;
+	line-height: 25px;
 }
 #footer {
    /*position:absolute;*/
@@ -8,7 +13,7 @@
   	padding:6px 14px;
   	text-align: center;
   	font-size : 14px;
-  	font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
+  	font-family: 'Duru Sans', sans-serif, "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
 }
 
 .editthispost {
