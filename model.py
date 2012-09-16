@@ -7,7 +7,7 @@ Created on Aug 26, 2012
 @author: xiayf
 '''
 
-from flask_sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
