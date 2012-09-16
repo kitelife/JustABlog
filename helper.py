@@ -26,6 +26,16 @@ def getCurrentUser():
         return session['username']
     
 def handleMarkDownContent(content):
+    '''
+    代码高亮的编辑语法：
+        ~~~~{.python}
+        # python code
+        ~~~~
+        
+        ~~~~.html
+        <p>HTML Document</p>
+        ~~~~
+    '''
     import markdown
     html = markdown.markdown(content, ['fenced_code', 'codehilite(force_linenos=True)'], safe_mode=True)
     return html

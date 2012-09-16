@@ -7,32 +7,42 @@ Created on Aug 26, 2012
 @author: xiayf
 '''
 
-import sqlite3
+from flask_sqlalchemy import SQLAlchemy
 
-class StoreOperation(object):
+db = SQLAlchemy()
+
+class users(db.Model):
+    userid = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(50))
+    email = db.Column(db.String(100), unique=True)
     
-    def __init__(self, dbName):
-        self.conn = sqlite3.connect(dbName)
-        self.cursor = self.conn.cursor()
+    def __init__(self, username, password, email):
+        self.username = username
+        self.password = password
+        self.email = email
         
-    def sqlCanModifyTable(self, sql, data):
-        self.cursor.execute(sql, data)
-        self.conn.commit()
-        
-    def sqlSelectFetchOne(self, sql, data):
-        if not data:
-            self.cursor.execute(sql)
-        else:
-            self.cursor.execute(sql, data)
-        return self.cursor.fetchone()
+class posts(db.Model):
+    postid = db.Column(db.Text, primary_key=True)
+    posttitle = db.Column(db.String(500))
+    postcontent = db.Column(db.Text)
+    updatetime = db.Column(db.String(20))
     
-    def sqlSelectFetchAll(self, sql, data):
-        if not data:
-            self.cursor.execute(sql)
-        else:
-            self.cursor.execute(sql, data)
-        return self.cursor.fetchall()
+    def __init__(self, postid, posttitle, postcontent, updatetime):
+        self.postid = postid
+        self.posttitle = posttitle
+        self.postcontent = postcontent
+        self.updatetime = updatetime
+
+class comments(db.Model):
+    commentid = db.Column(db.Integer, primary_key=True)
+    postid = db.Column(db.Integer)
+    commentusername = db.Column(db.String(100))
+    commentcontent = db.Column(db.Text)
+    commenttime = db.Column(db.String(20)) 
     
-    def closeDB(self):
-        self.cursor.close()
-        self.conn.close()
+    def __init__(self, postid, commentusername, commentcontent, commenttime):
+        self.postid = postid
+        self.commentusername = commentusername
+        self.commentcontent = commentcontent
+        self.commenttime = commenttime

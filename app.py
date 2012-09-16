@@ -1,4 +1,4 @@
-#!/usr/bin/evn python
+#!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
 __author__ = 'xiayf'
@@ -8,6 +8,8 @@ CONF = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'config')
 from flask import Flask
 from flask import request, redirect, url_for
 from flask import render_template
+
+from model import db
 import controller
 import helper
 
@@ -18,6 +20,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 app.config.from_pyfile(os.path.join(CONF, 'base.py'))
 app.config['active_page'] = dict()
 #print app.config
+db.init_app(app)
 
 @app.route('/')
 def index():
@@ -138,6 +141,8 @@ def addcomment():
 	controller.addComment(postid, commentusername, commentcontent)
 	return redirect('/postdetail/' + postid)
 
-###########################################
+#######################################################################
 if __name__ == '__main__':
+	if not os.path.exists("justablog.db"):
+		db.create_all('__all__', app)
 	app.run(debug=True)

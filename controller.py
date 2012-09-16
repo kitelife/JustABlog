@@ -6,26 +6,24 @@ Created on Aug 26, 2012
 
 @author: xiayf
 '''
-import model
+from model import *
 import time
 import random
 import helper
 
 def getPosts():
-    db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchAll("SELECT postid, posttitle, updatetime FROM posts ORDER BY updatetime DESC", data=None)
-    db.closeDB()
+    result = posts.query.order_by(posts.updatetime)
     listResults = list()
    
     for item in result:
         dictItem = dict()
-        dictItem['postid'] = item[0]
-        dictItem['posttitle'] = item[1]
+        dictItem['postid'] = item.postid
+        dictItem['posttitle'] = item.posttitle
         if not dictItem['posttitle']:
             dictItem['posttitle'] = u"文章未命名"
-        dictItem['updatetime'] = item[2]
+        dictItem['updatetime'] = item.updatetime
         listResults.append(dictItem)
-    
+    listResults.reverse()
     return listResults
 
 def getPostDetails(post_id):
@@ -35,90 +33,78 @@ def getPostDetails(post_id):
     return dictResult
 
 def getMDPost(post_id):
-    db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchOne("SELECT posttitle, postcontent, updatetime FROM posts WHERE postid = ?" , (post_id,))
+    result = posts.query.filter_by(postid=post_id).first()
     dictResult = dict()
     dictResult['postid'] = post_id
-    dictResult['posttitle'] = result[0]
-    dictResult['postcontent'] = result[1]
-    dictResult['updatetime'] = result[2]
+    dictResult['posttitle'] = result.posttitle
+    dictResult['postcontent'] = result.postcontent
+    dictResult['updatetime'] = result.updatetime
     
     return dictResult
 
 def loginCheckUser(username, password):
-    db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE username = ? AND password = ?" , (username, password))
-    if result and result[0]:
+    result = users.query.filter_by(username=username, password=password).all()
+    if result and len(result):
         return True
     else:
         return False
     
 def storePost(postName, postContent):
     createtime = time.strftime("%Y-%m-%d %H:%M:%S")
-    db = model.StoreOperation('justablog.db')
     postId = 'p' + str(time.time()).replace('.', '') + str("%.5f" % random.uniform(100, 1000)).replace('.', '')
-    db.sqlCanModifyTable("INSERT INTO posts (postid, posttitle, postcontent, updatetime) VALUES(?, ?, ?, ?)", (postId, postName, postContent, createtime))
-    db.conn.commit()
-    db.closeDB()
-    
+    post = posts(postId, postName, postContent, createtime)
+    db.session.add(post)
+    db.session.commit()
     return postId
     
 def updatePost(postid, posttitle, postcontent):
     updatetime = time.strftime("%Y-%m-%d %H:%M:%S")
-    db = model.StoreOperation('justablog.db')
-    db.sqlCanModifyTable("UPDATE posts SET posttitle = ?, postcontent = ?, updatetime = ? WHERE postid = ?", (posttitle, postcontent, updatetime, postid))
-    db.conn.commit()
-    db.closeDB()
+    post = posts.query.filter_by(postid=postid).first()
+    post.posttitle = posttitle
+    post.postcontent = postcontent
+    post.updatetime = updatetime
+    db.session.add(post)
+    db.session.commit()
 
 def delPost(postid):
-    db = model.StoreOperation('justablog.db')
-    db.sqlCanModifyTable("DELETE FROM posts WHERE postid = ?", (postid,))
-    db.conn.commit()
-    db.closeDB()
+    post = posts.query.filter_by(postid=postid).first()
+    db.session.delete(post)
+    db.session.commit()
     
 def getUserByEmail(email):
-    db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE email = ?", (email,))
-    if result and result[0]:
+    user = users.query.filter_by(email=email).first()
+    if user and len(user):
         return True
     else:
         return False
     
 def getUserByUsername(username):
-    db = model.StoreOperation('justablog.db')
-    result = db.sqlSelectFetchOne("SELECT COUNT(*) FROM users WHERE username = ?", (username,))
-    if result and result[0]:
+    result = users.query.filter_by(username=username).all()
+    if result and len(result):
         return True
     else:
         return False
 
 def addAccount(username, password, email):
-    db = model.StoreOperation('justablog.db')
-    db.sqlCanModifyTable("INSERT INTO users (username, password, email) VALUES(?, ?, ?)", (username, password, email))
-    db.conn.commit()
-    db.closeDB()
+    user = users(username, password, email)
+    db.session.add(user)
+    db.session.commit()
     return True
 
 def addComment(postid, commentUsername, commentContent):
     commenttime = time.strftime("%Y-%m-%d %H:%M:%S")
-    db = model.StoreOperation('justablog.db')
-    db.sqlCanModifyTable("INSERT INTO comments (postid, commentusername, commentcontent, commenttime) VALUES (?, ?, ?, ?)",
-                          (postid, commentUsername, commentContent, commenttime))
-    db.conn.commit()
-    db.closeDB()
+    comment = comments(postid, commentUsername, commentContent, commenttime)
+    db.session.add(comment)
+    db.session.commit()
     return True
 
 def getComments(postid):
-    db = model.StoreOperation('justablog.db')
-    comments = db.sqlSelectFetchAll("SELECT commentusername, commentcontent, commenttime FROM comments WHERE postid = ?", (postid,))
+    postcomments = comments.query.filter_by(postid=postid).all()
     commentList = list()
-    for comment in comments:
+    for comment in postcomments:
         commentItem = dict()
-        commentItem['commentusername'] = comment[0]
-        commentItem['commentcontent'] = comment[1]
-        commentItem['commenttime'] = comment[2]
+        commentItem['commentusername'] = comment.commentusername
+        commentItem['commentcontent'] = comment.commentcontent
+        commentItem['commenttime'] = comment.commenttime
         commentList.append(commentItem)
     return commentList
- 
-if __name__ == '__main__':
-    getPosts()
