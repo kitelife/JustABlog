@@ -73,7 +73,7 @@ def delPost(postid):
     
 def getUserByEmail(email):
     user = users.query.filter_by(email=email).first()
-    if user and len(user):
+    if user:
         return True
     else:
         return False
